@@ -2,7 +2,7 @@ const express=require("express");
 const bodyParser=require("body-parser");
 
 const mongoose=require("mongoose");
-
+const port=3008;
 const app= express();
 
 app.set('view engine', 'ejs');
@@ -34,7 +34,12 @@ const item3=new Item({
 });
 
 const defaultItems=[item1,item2,item3];
+const listSchema ={
+    name:String,
+    items:[itemsSchema]
+};
 
+const List = mongoose.model("List", listSchema);
 
 
 
@@ -64,6 +69,30 @@ else{
 });
 
 });
+
+app.get("/:customListName",function(req,res){
+   const customListName = req.params.customListName;
+   
+   List.findOne({name: customListName},function(err,foundList){
+       if(!err){
+           if(!foundList){
+              //Create a new list
+           }
+       }
+       else{
+           //show an existing list
+       }
+   });
+
+   const list = new List({
+       name: customListName,
+       items: defaultItems
+   });
+
+   list.save();
+
+});
+
 
 app.post("/",function(req,res){
   
@@ -110,7 +139,7 @@ app.get("/about",function(req,res){
 
 
 
-app.listen(process.env.PORT||3006,function(){
-    console.log("Server started at port 4000");
+app.listen(process.env.PORT||port,function(){
+    console.log("Server started at port " + port);
 
 });
