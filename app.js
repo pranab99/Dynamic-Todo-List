@@ -9,7 +9,8 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/todolistDB",{useNewUrlParser: true});
+mongoose.connect("mongodb://localhost:27017/todolistDB",{useNewUrlParser: true}, {useUnifiedTopology: true}).then(() => console.log( 'Database Connected' ))
+     .catch(err => console.log( err ));;
 
 const itemsSchema =new mongoose.Schema({
     _id:mongoose.Schema.ObjectId,
