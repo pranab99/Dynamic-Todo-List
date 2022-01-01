@@ -1,5 +1,9 @@
 const express=require("express");
 const bodyParser=require("body-parser");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 
 const mongoose=require("mongoose");
 const port=3008;
@@ -9,7 +13,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/todolistDB",{useNewUrlParser: true,useUnifiedTopology: true}).then(() => console.log( 'Database Connected' ))
+mongoose.connect(process.env.MONGODB_URL,{useNewUrlParser: true,useUnifiedTopology: true}).then(() => console.log( 'Database Connected' ))
      .catch(err => console.log( err ));;
 
 const itemsSchema =new mongoose.Schema({
